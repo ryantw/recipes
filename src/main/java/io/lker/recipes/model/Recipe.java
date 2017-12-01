@@ -17,8 +17,12 @@ public class Recipe {
     private String source;
     private String url;
     private String directions;
-    // todo add
-    //private Difficulty difficulty
+
+    // Ordinal: default, as 1,2,3
+    // String: Gets string of Enum. String is best, surives
+    // additions to Enum
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     // Mapped by = Property on child class. Defines relationship
     //  recipe is a variable in the Ingredient pojo
@@ -119,5 +123,13 @@ public class Recipe {
 
     public void setIngredients(Set<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 }
