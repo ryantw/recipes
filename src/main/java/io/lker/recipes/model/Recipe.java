@@ -1,6 +1,7 @@
 package io.lker.recipes.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,9 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    // Need more than 255 chars.
+    @Lob
     private String directions;
 
     // Ordinal: default, as 1,2,3
@@ -27,7 +31,7 @@ public class Recipe {
     // Mapped by = Property on child class. Defines relationship
     //  recipe is a variable in the Ingredient pojo
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     // Large object storage
     @Lob
@@ -36,6 +40,15 @@ public class Recipe {
     // Delete recipe, deletes notes.
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    // name the table RECIPE_CATEGORY
+    // inverseJoin is Category pojo id variable
+    //
+    @ManyToMany
+    @JoinTable(name = "RECIPE_CATEGORY",
+        // Made join column name recipe_id, but join it with the category_id
+        joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -132,4 +145,14 @@ public class Recipe {
     public void setDifficulty(Difficulty difficulty) {
         this.difficulty = difficulty;
     }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
+
+    public void addIngredient(Ingredient ingredient) { this.ingredients.add(ingredient); }
 }
