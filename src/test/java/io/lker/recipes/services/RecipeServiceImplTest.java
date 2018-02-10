@@ -1,5 +1,7 @@
 package io.lker.recipes.services;
 
+import io.lker.recipes.converters.RecipeCommandToRecipe;
+import io.lker.recipes.converters.RecipeToRecipeCommand;
 import io.lker.recipes.model.Recipe;
 import io.lker.recipes.repositories.RecipeRepository;
 import org.junit.Before;
@@ -20,12 +22,18 @@ public class RecipeServiceImplTest {
     RecipeServiceImpl recipeService;
 
     @Mock
+    RecipeCommandToRecipe recipeCommandToRecipe;
+
+    @Mock
+    RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
     RecipeRepository recipeRepository;
 
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
     }
 
     @Test
